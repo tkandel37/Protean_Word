@@ -215,13 +215,14 @@ text_editor.configure(font=('Arial', 12))
 
 ##############################################  status bar ###################################################
 
-#its defined and displayed above for quick bug fix..
+#its defined and displayed above for  bug fix..
 
-text_changed = False 
+text_changed = False                                #bug fixed  while exit
+
 def changed(event=None):
     global text_changed
     if text_editor.edit_modified():
-        text_changed = True 
+        text_changed = True                         #bug fixed  while exit
         words = len(text_editor.get(1.0, 'end').split())
         characters = len(text_editor.get(1.0, 'end-1c'))
         status_bar.config(text=f'Characters : {characters} Words : {words}')
@@ -250,7 +251,7 @@ file.add_command(label='New', compound=tk.LEFT, accelerator='Ctrl+N', command=ne
 ## open functionality
 
 def open_file(event=None):
-    global url 
+    global url
     url = filedialog.askopenfilename(initialdir=os.getcwd(), title='Select File', filetypes=(('Text File', '*.txt'), ('All files', '*.*')))
     try:
         with open(url, 'r') as fr:
@@ -261,6 +262,7 @@ def open_file(event=None):
     except:
         return 
     main_application.title(os.path.basename(url))
+    text_changed = False                             #bug fixed while exit
 
 file.add_command(label='Open', compound=tk.LEFT, accelerator='Ctrl+O', command=open_file)
 
