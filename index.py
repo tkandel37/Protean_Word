@@ -1,4 +1,3 @@
-
 import tkinter as tk 
 from tkinter import ttk 
 from tkinter import font, colorchooser, filedialog, messagebox
@@ -9,9 +8,16 @@ main_application.geometry('1200x800')
 main_application.title('Protean Word')
 main_application.wm_iconbitmap('icons/icon.ico')
 
+#status bar not displaying properly bug fixed.
 
+def statusbar():
+    global status_bar
+    status_bar = ttk.Label(main_application, text = 'Status Bar')  
+    status_bar.pack(side=tk.BOTTOM)
+
+statusbar()
 ############################################## main menu ###################################################
-# -------------------------------------&&&&&&&& End main menu &&&&&&&&&&& ----------------------------------
+
 main_menu = tk.Menu()
 #file icons
 
@@ -42,7 +48,6 @@ main_menu.add_cascade(label='View', menu=view)
 
 
 ############################################## toolbar  ###################################################
-
 
 tool_bar = ttk.Label(main_application)
 tool_bar.pack(side=tk.TOP, fill=tk.X)
@@ -210,8 +215,7 @@ text_editor.configure(font=('Arial', 12))
 
 ##############################################  status bar ###################################################
 
-status_bar = ttk.Label(main_application, text = 'Status Bar')
-status_bar.pack(side=tk.BOTTOM)
+#its defined and displayed above for quick bug fix..
 
 text_changed = False 
 def changed(event=None):
@@ -219,7 +223,7 @@ def changed(event=None):
     if text_editor.edit_modified():
         text_changed = True 
         words = len(text_editor.get(1.0, 'end').split())
-        characters = len(text_editor.get(1.0, 'end-1'))
+        characters = len(text_editor.get(1.0, 'end-1c'))
         status_bar.config(text=f'Characters : {characters} Words : {words}')
     text_editor.edit_modified(False)
 
@@ -382,7 +386,6 @@ edit.add_command(label='Clear All',  compound=tk.LEFT, accelerator='Ctrl+Alt+X',
 edit.add_command(label='Find',  compound=tk.LEFT, accelerator='Ctrl+F', command = find_func)
 
 ## view check button 
-
 show_statusbar = tk.BooleanVar()
 show_statusbar.set(True)
 show_toolbar = tk.BooleanVar()
@@ -395,10 +398,8 @@ def hide_toolbar():
         show_toolbar = False 
     else :
         text_editor.pack_forget()
-        status_bar.pack_forget()
         tool_bar.pack(side=tk.TOP, fill=tk.X)
         text_editor.pack(fill=tk.BOTH, expand=True)
-        status_bar.pack(side=tk.BOTTOM)
         show_toolbar = True 
 
 
@@ -408,13 +409,12 @@ def hide_statusbar():
         status_bar.pack_forget()
         show_statusbar = False 
     else :
-        status_bar.pack(side=tk.BOTTOM)
+        statusbar()
         show_statusbar = True 
 
 
 view.add_checkbutton(label='Tool Bar',onvalue=True, offvalue=0,variable = show_toolbar, compound=tk.LEFT, command=hide_toolbar)
 view.add_checkbutton(label='Status Bar',onvalue=1, offvalue=False,variable = show_statusbar, compound=tk.LEFT, command=hide_statusbar)
-
 
 ## color theme 
 
@@ -433,6 +433,4 @@ main_application.bind("<Control-Shift-s>", save_as)
 main_application.bind("<Control-q>", exit_func)
 main_application.bind("<Control-f>", find_func)
 
-
 main_application.mainloop()
-
