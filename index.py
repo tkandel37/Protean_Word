@@ -44,7 +44,7 @@ main_menu.add_cascade(label='View', menu=view)
 ############################################## toolbar  ###################################################
 
 
-tool_bar = ttk.Label(main_application,)
+tool_bar = ttk.Label(main_application)
 tool_bar.pack(side=tk.TOP, fill=tk.X)
 
 ## font box 
@@ -218,8 +218,8 @@ def changed(event=None):
     global text_changed
     if text_editor.edit_modified():
         text_changed = True 
-        words = len(text_editor.get(1.0, 'end-1c').split())
-        characters = len(text_editor.get(1.0, 'end-1c'))
+        words = len(text_editor.get(1.0, 'end').split())
+        characters = len(text_editor.get(1.0, 'end-1'))
         status_bar.config(text=f'Characters : {characters} Words : {words}')
     text_editor.edit_modified(False)
 
@@ -270,12 +270,10 @@ def save_file(event=None):
             with open(url, 'w', encoding='utf-8') as fw:
                 fw.write(content)
         else:
-            url = filedialog.asksaveasfile(mode = 'w', defaultextension='.txt', filetypes=(('Text File', '*.txt'), ('All files', '*.*')))
-            content2 = text_editor.get(1.0, tk.END)
-            url.write(content2)
-            url.close()
+            save_as()
     except:
         return 
+    main_application.title(os.path.basename(url))
 
 file.add_command(label='Save', compound=tk.LEFT, accelerator='Ctrl+S', command = save_file)
 
@@ -290,29 +288,20 @@ def save_as(event=None):
         url.close()
     except:
         return 
-
+    main_application.title(os.path.basename(url))
 
 file.add_command(label='Save As', compound=tk.LEFT, accelerator='Ctrl+Shift+S', command=save_as)
 
 ## exit functionality 
 
 def exit_func(event=None):
-    global url, text_changed
+    global text_changed
     try:
         if text_changed:
             mbox = messagebox.askyesnocancel('Warning', 'Do you want to save the file ?')
             if mbox is True:
-                if url:
-                    content = text_editor.get(1.0, tk.END)
-                    with open(url, 'w', encoding='utf-8') as fw:
-                        fw.write(content)
-                        main_application.destroy()
-                else:
-                    content2 = str(text_editor.get(1.0, tk.END))
-                    url = filedialog.asksaveasfile(mode = 'w', defaultextension='.txt', filetypes=(('Text File', '*.txt'), ('All files', '*.*')))
-                    url.write(content2)
-                    url.close()
-                    main_application.destroy()
+                save_file()
+                main_application.destroy()
             elif mbox is False:
                 main_application.destroy()
         else:
