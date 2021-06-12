@@ -135,39 +135,73 @@ def change_fontsize(event=None):
 font_box.bind("<<ComboboxSelected>>", change_font)
 font_size.bind("<<ComboboxSelected>>", change_fontsize)
 
-######## buttons functionality 
-
-# bold button functionality
-def change_bold():
-    text_property = tk.font.Font(font=text_editor['font'])
-    if text_property.actual()['weight'] == 'normal':
-        text_editor.configure(font=(current_font_family, current_font_size, 'bold'))
-    if text_property.actual()['weight'] == 'bold':
-        text_editor.configure(font=(current_font_family, current_font_size, 'normal'))
-    
-bold_btn.configure(command=change_bold)
-
+######## buttons functionality
 
 # italic functionlaity
 def change_italic():
-    text_property = tk.font.Font(font=text_editor['font'])
-    if text_property.actual()['slant'] == 'roman':
-        text_editor.configure(font=(current_font_family, current_font_size, 'italic'))
-    if text_property.actual()['slant'] == 'italic':
-        text_editor.configure(font=(current_font_family, current_font_size, 'normal'))
+
+    text_editor.tag_remove("bold","sel.first","sel.last") #bug fixed while clicking simultaneously
+    text_editor.tag_remove("underline","sel.first","sel.last") #bug fixed while clicking simultaneously
+
+    #create font
+    bold_font = font.Font(text_editor,text_editor.cget("font"))
+    bold_font.configure(slant="italic")
+
+    # creat tag
+    text_editor.tag_configure("italic",font=bold_font)
+
+    #if statement to set tag
+    current_tags = text_editor.tag_names("sel.first")
+    if "italic" in current_tags:
+        text_editor.tag_remove("italic","sel.first","sel.last")
+    else:
+        text_editor.tag_add("italic","sel.first","sel.last")
     
 italic_btn.configure(command=change_italic)
 
 # underline functionality 
 def change_underline():
-    text_property = tk.font.Font(font=text_editor['font'])
-    if text_property.actual()['underline'] == 0:
-        text_editor.configure(font=(current_font_family, current_font_size, 'underline'))
-    if text_property.actual()['underline'] == 1:
-        text_editor.configure(font=(current_font_family, current_font_size, 'normal'))
+
+    text_editor.tag_remove("bold","sel.first","sel.last") #bug fixed while clicking simultaneously
+    text_editor.tag_remove("italic","sel.first","sel.last") #bug fixed while clicking simultaneously
+    
+    #create font
+    underline_font = font.Font(text_editor,text_editor.cget("font"))
+    underline_font.configure(underline=1)
+
+    # creat tag
+    text_editor.tag_configure("underline",font=underline_font)
+
+    #if statement to set tag
+    current_tags = text_editor.tag_names("sel.first")
+    if "underline" in current_tags:
+        text_editor.tag_remove("underline","sel.first","sel.last")
+    else:
+        text_editor.tag_add("underline","sel.first","sel.last")
     
 underline_btn.configure(command=change_underline)
 
+# bold button functionality
+def change_bold():
+
+    text_editor.tag_remove("underline","sel.first","sel.last") #bug fixed while clicking simultaneously
+    text_editor.tag_remove("italic","sel.first","sel.last") #bug fixed while clicking simultaneously
+
+    #create font
+    bold_font = font.Font(text_editor,text_editor.cget("font"))
+    bold_font.configure(weight="bold")
+
+    # creat tag
+    text_editor.tag_configure("bold",font=bold_font)
+
+    #if statement to set tag
+    current_tags = text_editor.tag_names("sel.first")
+    if "bold" in current_tags:
+        text_editor.tag_remove("bold","sel.first","sel.last")
+    else:
+        text_editor.tag_add("bold","sel.first","sel.last")
+    
+bold_btn.configure(command=change_bold)
 
 ## font color functionality 
 def change_font_color():
