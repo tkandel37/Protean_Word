@@ -107,7 +107,7 @@ align_right_btn.grid(row=0, column=7, padx=5)
 
 ############################################## text editor ###################################################
 
-text_editor = tk.Text(main_application)
+text_editor = tk.Text(main_application,selectforeground="yellow",selectbackground="red",undo=True)
 text_editor.config(wrap='word', relief=tk.FLAT)
 
 scroll_bar = tk.Scrollbar(main_application)
@@ -180,32 +180,30 @@ font_color_btn.configure(command=change_font_color)
 ### align functionality 
 
 def align_left():
-    text_content = text_editor.get(1.0, 'end')
+    text_content = text_editor.get('sel.first','sel.last')
     text_editor.tag_config('left', justify=tk.LEFT)
-    text_editor.delete(1.0, tk.END)
+    text_editor.delete('sel.first','sel.last')
     text_editor.insert(tk.INSERT, text_content, 'left')
 
 align_left_btn.configure(command=align_left)
 
 ## center 
 def align_center():
-    text_content = text_editor.get(1.0, 'end')
+    text_content = text_editor.get('sel.first','sel.last')
     text_editor.tag_config('center', justify=tk.CENTER)
-    text_editor.delete(1.0, tk.END)
+    text_editor.delete('sel.first','sel.last')
     text_editor.insert(tk.INSERT, text_content, 'center')
 
 align_center_btn.configure(command=align_center)
 
 ## right 
 def align_right():
-    text_content = text_editor.get(1.0, 'end')
+    text_content = text_editor.get('sel.first','sel.last')
     text_editor.tag_config('right', justify=tk.RIGHT)
-    text_editor.delete(1.0, tk.END)
+    text_editor.delete('sel.first','sel.last')
     text_editor.insert(tk.INSERT, text_content, 'right')
 
 align_right_btn.configure(command=align_right)
-
-
 
 
 
@@ -317,7 +315,7 @@ def exit_func(event=None):
 file.add_command(label='Exit', compound=tk.LEFT, accelerator='Ctrl+Q', command=exit_func)
 
 
-############ find functionality
+#########################################################find functionality##############################################################
 
 def find_func(event=None):
 
