@@ -106,7 +106,6 @@ align_right_btn.grid(row=0, column=7, padx=5)
 # -------------------------------------&&&&&&&& End toolbar  &&&&&&&&&&& ----------------------------------
 
 ############################################## text editor ###################################################
-
 text_editor = tk.Text(main_application,selectforeground="yellow",selectbackground="red",undo=True)
 text_editor.config(wrap='word', relief=tk.FLAT)
 
@@ -205,9 +204,20 @@ bold_btn.configure(command=change_bold)
 
 ## font color functionality 
 def change_font_color():
-    color_var = tk.colorchooser.askcolor()
-    text_editor.configure(fg=color_var[1])
+    color_var = colorchooser.askcolor()[1]
+    
+    if color_var:
+        #create font
+        color_font = font.Font(text_editor,text_editor.cget("font"))
+        # creat tag
+        text_editor.tag_configure("color",font=color_font,foreground=color_var)
 
+        #if statement to set tag
+        current_tags = text_editor.tag_names("sel.first")
+        if "color" in current_tags:
+            text_editor.tag_remove("color","sel.first","sel.last")
+        else:
+            text_editor.tag_add("color","sel.first","sel.last")
 
 font_color_btn.configure(command=change_font_color)
 
@@ -218,7 +228,6 @@ def align_left():
     text_editor.tag_config('left', justify=tk.LEFT)
     text_editor.delete('sel.first','sel.last')
     text_editor.insert(tk.INSERT, text_content, 'left')
-
 align_left_btn.configure(command=align_left)
 
 ## center 
