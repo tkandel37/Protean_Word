@@ -1,7 +1,8 @@
 import tkinter as tk 
 from tkinter import ttk 
 from tkinter import font, colorchooser, filedialog, messagebox
-import os 
+import os
+from typing import Text 
 
 main_application = tk.Tk()
 main_application.geometry('1200x800')
@@ -9,7 +10,7 @@ main_application.title('Protean Word')
 main_application.wm_iconbitmap('icons/icon.ico')
 
 #status bar not displaying properly bug fixed.
-
+#displaying teacher
 def statusbar():
     global status_bar
     status_bar = ttk.Label(main_application, text = 'Status Bar')  
@@ -70,7 +71,7 @@ font_size.grid(row=0, column=4, padx=5)
 
 ## bold button 
 bold_icon = tk.PhotoImage(file='icons/bold.png')
-bold_btn = ttk.Button(tool_bar, image=bold_icon)
+bold_btn = ttk.Button(tool_bar,image=bold_icon)
 bold_btn.grid(row=0, column=0, padx=5)
 
 ## italic button 
@@ -460,7 +461,6 @@ view.add_checkbutton(label='Tool Bar',onvalue=True, offvalue=0,variable = show_t
 view.add_checkbutton(label='Status Bar',onvalue=1, offvalue=False,variable = show_statusbar, compound=tk.LEFT, command=hide_statusbar)
 
 ## color theme 
-
 
 
 
