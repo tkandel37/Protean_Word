@@ -10,7 +10,7 @@ main_application.title('Protean Word')
 main_application.wm_iconbitmap('icons/icon.ico')
 
 #status bar not displaying properly bug fixed.
-#displaying teacher
+
 def statusbar():
     global status_bar
     status_bar = ttk.Label(main_application, text = 'Status Bar')  
