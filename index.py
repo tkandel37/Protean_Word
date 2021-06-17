@@ -8,37 +8,11 @@ main_application.geometry('1200x800')
 main_application.title('A')
 main_application.wm_iconbitmap('icons/icon.ico')
 
-#status bar not displaying properly bug fixed.
-
-def statusbar():
-    global status_bar
-    status_bar = ttk.Label(main_application, text = 'Status Bar')  
-    status_bar.pack(side=tk.BOTTOM)
-
-statusbar()
-############################################## main menu ###################################################
-
-main_menu = tk.Menu()
-#file icons
-
+######################### Main menu #######################################
+main_menu = tk.Menu()  
 file = tk.Menu(main_menu, tearoff=False)
-
-
-
-#####edit 
-#edit icons 
-
-
 edit = tk.Menu(main_menu, tearoff=False)
-
-
-######## view icons 
-
 view = tk.Menu(main_menu, tearoff=False)
-
-
-######## color theme 
-
 
 # cascade 
 main_menu.add_cascade(label='File', menu=file)
@@ -46,6 +20,28 @@ main_menu.add_cascade(label='Edit', menu=edit)
 main_menu.add_cascade(label='View', menu=view)
 #main_menu.add_cascade(label='Color Theme', menu=color_theme)
 
+######################### End Main menu ####################################
+
+##############################################  status bar ###################################################
+def statusbar():
+    global status_bar
+    status_bar = ttk.Label(main_application, text = 'Status Bar')  
+    status_bar.pack(side=tk.BOTTOM)
+statusbar()
+
+#its defined and displayed above for  bug fix..
+text_changed = False                                #bug fixed  while exit
+def changed(event=None):
+    global text_changed
+    if text_editor.edit_modified():
+        words = len(text_editor.get(1.0, 'end').split())
+        characters = len(text_editor.get(1.0, 'end-1c'))
+        status_bar.config(text=f'Characters : {characters} Words : {words}')
+        text_changed = True                         #bug fixed  while exit
+
+    text_editor.edit_modified(False)
+
+############################################## End status bar ###################################################
 
 ############################################## toolbar  ###################################################
 
@@ -72,7 +68,6 @@ font_size.grid(row=0, column=4, padx=5)
 bold_icon = tk.PhotoImage(file='icons/bold.png')
 bold_btn = ttk.Button(tool_bar,image=bold_icon)
 bold_btn.grid(row=0, column=0, padx=5)
-
 
 ## italic button 
 italic_icon = tk.PhotoImage(file='icons/italic.png')
@@ -104,10 +99,10 @@ align_right_icon = tk.PhotoImage(file='icons/align_right.png')
 align_right_btn = ttk.Button(tool_bar, image=align_right_icon)
 align_right_btn.grid(row=0, column=7, padx=5)
 
-# -------------------------------------&&&&&&&& End toolbar  &&&&&&&&&&& ----------------------------------
-
-############################################## text editor ###################################################
+############## All function of tool bar
 text_editor = tk.Text(main_application,selectforeground="yellow",selectbackground="red",undo=True)
+text_editor.bind('<<Modified>>', changed) 
+
 text_editor.config(wrap='word', relief=tk.FLAT)
 
 scroll_bar = tk.Scrollbar(main_application)
@@ -248,36 +243,12 @@ def align_right():
     text_editor.insert(tk.INSERT, text_content, 'right')
 
 align_right_btn.configure(command=align_right)
-
-
-
 text_editor.configure(font=('Arial', 12))
-# -------------------------------------&&&&&&&& End text editor &&&&&&&&&&& ----------------------------------
-
-
-##############################################  status bar ###################################################
-
-#its defined and displayed above for  bug fix..
-
-text_changed = False                                #bug fixed  while exit
-def changed(event=None):
-    global text_changed
-    if text_editor.edit_modified():
-        words = len(text_editor.get(1.0, 'end').split())
-        characters = len(text_editor.get(1.0, 'end-1c'))
-        status_bar.config(text=f'Characters : {characters} Words : {words}')
-        text_changed = True                         #bug fixed  while exit
-
-    text_editor.edit_modified(False)
-
-text_editor.bind('<<Modified>>', changed)
-
-
-# -------------------------------------&&&&&&&& End  status bar &&&&&&&&&&& ----------------------------------
-
+############################################## End -toolbar  ###################################################
 
 ############################################## main menu functinality ###################################################
 
+################################################## File menu ##########################################################
 ## variable 
 url = ''
 
@@ -286,14 +257,15 @@ def new_file(event=None):
     global url 
     url = ''
     text_editor.delete(1.0, tk.END)
+    main_application.title("*New File")
 
-## file commands 
+
 file.add_command(label='New', compound=tk.LEFT, accelerator='Ctrl+N', command=new_file)
 
 ## open functionality
 
 def open_file(event=None):
-    global url,text_changed
+    global url,text_changed,main_application
     
     url = filedialog.askopenfilename(initialdir=os.getcwd(), title='Select File', filetypes=(('Text File', '*.txt'), ('All files', '*.*')))
     try:
@@ -304,7 +276,6 @@ def open_file(event=None):
         return 
     except:
         return 
-
     main_application.title(os.path.basename(url))
 
 file.add_command(label='Open', compound=tk.LEFT, accelerator='Ctrl+O', command=open_file)
@@ -312,7 +283,7 @@ file.add_command(label='Open', compound=tk.LEFT, accelerator='Ctrl+O', command=o
 ## save file 
 
 def save_file(event=None):
-    global url,text_changed 
+    global url,text_changed,main_application 
     try:
         if url:
             content = str(text_editor.get(1.0, tk.END))
@@ -344,7 +315,6 @@ def save_as(event=None):
 file.add_command(label='Save As', compound=tk.LEFT, accelerator='Ctrl+Shift+S', command=save_as)
 
 ## exit functionality 
-
 def exit_func(event=None):
     global text_changed
     try:
@@ -361,9 +331,12 @@ def exit_func(event=None):
         return 
 file.add_command(label='Exit', compound=tk.LEFT, accelerator='Ctrl+Q', command=exit_func)
 
+################################################## End File menu ##########################################################
 
-#########################################################find functionality##############################################################
 
+################################################### Edit menu #############################################################
+
+######### Find function
 def find_func(event=None):
 
     def find():
@@ -422,8 +395,9 @@ def find_func(event=None):
     ## button grid 
     find_button.grid(row=2, column=0, padx=8, pady=4)
     replace_button.grid(row=2, column=1, padx=8, pady=4)
-
+    
     find_dialogue.mainloop()
+######### End Find function
 
 ## edit commands 
 edit.add_command(label='Copy', compound=tk.LEFT, accelerator='Ctrl+C', command=lambda:text_editor.event_generate("<Control c>"))
@@ -432,6 +406,10 @@ edit.add_command(label='Cut',  compound=tk.LEFT, accelerator='Ctrl+X', command=l
 edit.add_command(label='Clear All',  compound=tk.LEFT, accelerator='Ctrl+Alt+X', command= lambda:text_editor.delete(1.0, tk.END))
 edit.add_command(label='Find',  compound=tk.LEFT, accelerator='Ctrl+F', command = find_func)
 
+################################################### Edit menu #############################################################
+
+
+################################ View portion ################################################################
 ## view check button 
 show_statusbar = tk.BooleanVar()
 show_statusbar.set(True)
@@ -459,24 +437,22 @@ def hide_statusbar():
         statusbar()
         show_statusbar = True 
 
-
 view.add_checkbutton(label='Tool Bar',onvalue=True, offvalue=0,variable = show_toolbar, compound=tk.LEFT, command=hide_toolbar)
 view.add_checkbutton(label='Status Bar',onvalue=1, offvalue=False,variable = show_statusbar, compound=tk.LEFT, command=hide_statusbar)
+################################ End View portion ################################################################
 
-## color theme 
+################################# End main menu  functinality ###################################################
 
 
 
-# -------------------------------------&&&&&&&& End main menu  functinality&&&&&&&&&&& ----------------------------------
-
-main_application.config(menu=main_menu)
-
-#### bind shortcut keys 
+########################### Binding keys ######################
 main_application.bind("<Control-n>", new_file)
 main_application.bind("<Control-o>", open_file)
 main_application.bind("<Control-s>", save_file)
 main_application.bind("<Control-Shift-s>", save_as)
 main_application.bind("<Control-q>", exit_func)
 main_application.bind("<Control-f>", find_func)
+########################## Bind keys end ########################
 
+main_application.config(menu=main_menu)
 main_application.mainloop()
