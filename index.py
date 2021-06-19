@@ -1,7 +1,8 @@
 import tkinter as tk 
-from tkinter import ttk 
+from tkinter import Button, Label, Toplevel, ttk 
 from tkinter import font, colorchooser, filedialog, messagebox
 import os
+from tkinter.constants import COMMAND, X
 
 main_application = tk.Tk()
 main_application.geometry('1200x800')
@@ -443,7 +444,32 @@ view.add_checkbutton(label='Status Bar',onvalue=1, offvalue=False,variable = sho
 
 ################################# End main menu  functinality ###################################################
 
+########################################### Color Theme #############################################
 
+color_theme = tk.Menu(main_menu, tearoff=False)
+
+theme_choice = tk.StringVar()
+#color_icons = (light_default_icon, light_plus_icon, dark_icon, red_icon, monokai_icon, night_blue_icon)
+
+color_dict = {
+    'Light' : ('#000000', '#ffffff'),
+    'Light +' : ('#000000', '#BABABA'),
+    'Dark' : ('#FF8C00', '#000000'),
+    'Dark Blue' : ('#ffe8e8', '#000854'),
+    'Purp' : ('#fffa66', '#370854'),
+    'Sea' :('#000000', '#00b8cb')
+}
+
+def change_theme():
+    chosen_theme = theme_choice.get()
+    color_tuple = color_dict.get(chosen_theme)
+    fg_color, bg_color = color_tuple[0], color_tuple[1]
+    text_editor.config(background=bg_color, fg=fg_color, insertbackground=fg_color) 
+for i in color_dict:
+    color_theme.add_radiobutton(label = i,  variable=theme_choice, compound=tk.LEFT, command=change_theme)
+
+
+########################################### End Color Theme #############################################
 
 ########################### Binding keys ######################
 main_application.bind("<Control-n>", new_file)
