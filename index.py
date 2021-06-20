@@ -1,12 +1,11 @@
 import tkinter as tk 
-from tkinter import Button, Label, Toplevel, ttk 
+from tkinter import ttk
 from tkinter import font, colorchooser, filedialog, messagebox
 import os
-from tkinter.constants import COMMAND, X
 
 main_application = tk.Tk()
 main_application.geometry('1200x800')
-main_application.title('A')
+main_application.title('Protean Word')
 main_application.wm_iconbitmap('icons/icon.ico')
 
 ######################### Main menu #######################################
@@ -467,7 +466,6 @@ def change_theme():
     text_editor.config(background=bg_color, fg=fg_color, insertbackground=fg_color) 
 for i in color_dict:
     color_theme.add_radiobutton(label = i,  variable=theme_choice, compound=tk.LEFT, command=change_theme)
-
 ##################################### Custom Theme ########################################################
 def custom():
     #All functions:
@@ -491,18 +489,18 @@ def custom():
     def apply():
         global text_editor,custom__bg,custom__fg
         custom_theme.destroy()
-        text_editor.configure(background=custom__bg,fg=custom__fg)
+        text_editor.configure(background=custom__bg,fg=custom__fg,insertbackground=custom__fg)
     ### displaying 
-    custom_theme = Toplevel()
+    custom_theme = tk.Toplevel()
     custom_theme.attributes('-topmost','true')
     custom_theme.geometry('500x300+500+200')
     custom_theme.title('Custom Theme')
     custom_theme.resizable(0,0)
 
-    bg_button = Button(custom_theme,text="Background Color",  relief="groove")
-    apply = Button(custom_theme,text="Apply",  relief="groove", command=apply)
+    bg_button = tk.Button(custom_theme,text="Background Color",  relief="groove")
+    apply = tk.Button(custom_theme,text="Apply",  relief="groove", command=apply)
 
-    fg_button = Button(custom_theme,text="Foreground Color",  relief="groove")
+    fg_button = tk.Button(custom_theme,text="Foreground Color",  relief="groove")
     custom_text = tk.Text(custom_theme)
 
     bg_button.pack(side=tk.TOP, fill=tk.X, ipady=10)
@@ -514,11 +512,12 @@ def custom():
     fg_button.configure(command=custom_fg)
     apply.configure(background='#01FF00', fg='#000000')
 
-color_theme.add_command(label='Custom', command=custom)
+color_theme.add_radiobutton(label="custom theme", variable=theme_choice,compound=tk.LEFT, command=custom )
 main_menu.add_cascade(label='Theme', menu=color_theme)
-######################################### End custom theme
+######################################### End custom theme #############################################
 
 ########################################### End Color Theme #############################################
+
 
 ########################### Binding keys ######################
 main_application.bind("<Control-n>", new_file)
