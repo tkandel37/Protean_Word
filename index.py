@@ -471,23 +471,27 @@ for i in color_dict:
 ##################################### Custom Theme ########################################################
 def custom():
     #All functions:
-    custom_fg = ''
-    custom_bg = ''
+    global custom__fg
+    global custom__bg
+    
+    custom__fg = '#000000'
+    custom__bg = '#ffffff'
+
     def custom_fg():
-        global custom_fg
-        custom_fg = colorchooser.askcolor()[1]
-        if custom_fg:          #bug fixed
-            custom_text.configure(fg=custom_fg,insertbackground=custom_fg)
+        global custom__fg
+        custom__fg = colorchooser.askcolor()[1]
+        if custom__fg:          #bug fixed
+            custom_text.configure(fg=custom__fg,insertbackground=custom__fg)
             
     def custom_bg():
-        global custom_bg
-        custom_bg = colorchooser.askcolor()[1]
-        if custom_bg:             #bug fixed
-            custom_text.configure(background=custom_bg)
+        global custom__bg
+        custom__bg = colorchooser.askcolor()[1]
+        if custom__bg:             #bug fixed
+            custom_text.configure(background=custom__bg)
     def apply():
-        global custom_fg,custom_bg,text_editor
+        global text_editor,custom__bg,custom__fg
         custom_theme.destroy()
-        text_editor.configure(background=custom_bg,fg=custom_fg)
+        text_editor.configure(background=custom__bg,fg=custom__fg)
     ### displaying 
     custom_theme = Toplevel()
     custom_theme.attributes('-topmost','true')
