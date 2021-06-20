@@ -468,6 +468,51 @@ def change_theme():
 for i in color_dict:
     color_theme.add_radiobutton(label = i,  variable=theme_choice, compound=tk.LEFT, command=change_theme)
 
+##################################### Custom Theme ########################################################
+def custom():
+    #All functions:
+    custom_fg = ''
+    custom_bg = ''
+    def custom_fg():
+        global custom_fg
+        custom_fg = colorchooser.askcolor()[1]
+        if custom_fg:          #bug fixed
+            custom_text.configure(fg=custom_fg,insertbackground=custom_fg)
+            
+    def custom_bg():
+        global custom_bg
+        custom_bg = colorchooser.askcolor()[1]
+        if custom_bg:             #bug fixed
+            custom_text.configure(background=custom_bg)
+    def apply():
+        global custom_fg,custom_bg,text_editor
+        custom_theme.destroy()
+        text_editor.configure(background=custom_bg,fg=custom_fg)
+    ### displaying 
+    custom_theme = Toplevel()
+    custom_theme.attributes('-topmost','true')
+    custom_theme.geometry('500x300+500+200')
+    custom_theme.title('Custom Theme')
+    custom_theme.resizable(0,0)
+
+    bg_button = Button(custom_theme,text="Background Color",  relief="groove")
+    apply = Button(custom_theme,text="Apply",  relief="groove", command=apply)
+
+    fg_button = Button(custom_theme,text="Foreground Color",  relief="groove")
+    custom_text = tk.Text(custom_theme)
+
+    bg_button.pack(side=tk.TOP, fill=tk.X, ipady=10)
+    apply.pack(side=tk.BOTTOM, fill=tk.X, ipady=10)
+    fg_button.pack(side=tk.BOTTOM, fill=tk.X, ipady=10)
+    custom_text.pack(fill=tk.BOTH, expand=False)
+
+    bg_button.configure(command=custom_bg)
+    fg_button.configure(command=custom_fg)
+    apply.configure(background='#01FF00', fg='#000000')
+
+color_theme.add_command(label='Custom', command=custom)
+main_menu.add_cascade(label='Theme', menu=color_theme)
+######################################### End custom theme
 
 ########################################### End Color Theme #############################################
 
