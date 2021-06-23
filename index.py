@@ -18,11 +18,10 @@ view = tk.Menu(main_menu, tearoff=False)
 main_menu.add_cascade(label='File', menu=file)
 main_menu.add_cascade(label='Edit', menu=edit)
 main_menu.add_cascade(label='View', menu=view)
-#main_menu.add_cascade(label='Color Theme', menu=color_theme)
 
 ######################### End Main menu ####################################
 
-##############################################  status bar ###################################################
+##############################################  status bar ##################
 def statusbar():
     global status_bar
     status_bar = ttk.Label(main_application, text = 'Status Bar')  
@@ -32,7 +31,13 @@ statusbar()
 #its defined and displayed above for  bug fix..
 text_changed = False                                #bug fixed  while exit
 def changed(event=None):
-    global text_changed
+    global text_changed,text_editor
+
+    #bug fixed font not changing
+    ############################################################################                                         
+    text_editor.configure(font=(current_font_family, current_font_size))       #
+    ############################################################################
+
     if text_editor.edit_modified():
         words = len(text_editor.get(1.0, 'end').split())
         characters = len(text_editor.get(1.0, 'end-1c'))
@@ -41,7 +46,51 @@ def changed(event=None):
 
     text_editor.edit_modified(False)
 
-############################################## End status bar ###################################################
+############################################## End status bar #############################################
+
+
+############################################## File handling  ##############################################
+#only reading file  ###returs the value
+def file_read(index):                 
+    file_path = os.path.isfile("system/style.pw")
+    def read():
+        global value
+        with open("system/style.pw",'r') as f:
+            text_list = f.readlines()
+            value = text_list[index].strip()
+        return value 
+    if file_path:
+        return read()
+    else:
+        with  open('system/style.pw','w') as f:
+            a = ["Arial\n","12\n","#ffffff\n","#000000\n"]
+            for i in a:
+                f.write(i)
+        return read()
+    
+#reading and writing file
+def file_change(text,index):
+    file_path = os.path.isfile("system/style.pw")
+
+    def change():
+        a = []
+        with open('system/style.pw','r') as f:
+            a = f.readlines()
+            a[index] = text + "\n"
+        with open('system/style.pw','w') as g:
+            for i in a:
+                g.write(i)
+
+    if file_path:
+        change()
+    else:
+        with  open('system/style.pw','w') as f:
+            a = ["Arial\n","12\n","#ffffff\n","#000000\n"]
+            for i in a:
+                f.write(i)
+        change() 
+############################################## End File handling  ##########################################
+
 
 ############################################## toolbar  ###################################################
 
@@ -53,15 +102,14 @@ font_tuple = tk.font.families()
 font_family = tk.StringVar()
 font_box = ttk.Combobox(tool_bar, width=30, textvariable=font_family, state='readonly')
 font_box['values'] = font_tuple
-font_box.current(font_tuple.index('Arial'))
+font_box.current(font_tuple.index(file_read(0)))
 font_box.grid(row=0, column=3, padx=5)
-
 
 ## size box 
 size_var = tk.IntVar()
 font_size = ttk.Combobox(tool_bar, width=14, textvariable = size_var, state='readonly')
-font_size['values'] = tuple(range(8,81))
-font_size.current(4)
+font_size['values'] = tuple(range(0,81))
+font_size.current(int(file_read(1)))
 font_size.grid(row=0, column=4, padx=5)
 
 ## bold button 
@@ -99,8 +147,10 @@ align_right_icon = tk.PhotoImage(file='icons/align_right.png')
 align_right_btn = ttk.Button(tool_bar, image=align_right_icon)
 align_right_btn.grid(row=0, column=7, padx=5)
 
-############## All function of tool bar
-text_editor = tk.Text(main_application,selectforeground="yellow",selectbackground="red",undo=True)
+fnt_fam = file_read(0)
+fnt_siz = int(file_read(1))
+text_editor = tk.Text(main_application,font=("Arial",80),background=file_read(2),fg=file_read(3),selectforeground="yellow",selectbackground="red",undo=True)
+
 text_editor.bind('<<Modified>>', changed) 
 
 text_editor.config(wrap='word', relief=tk.FLAT)
@@ -113,18 +163,20 @@ scroll_bar.config(command=text_editor.yview)
 text_editor.config(yscrollcommand=scroll_bar.set)
 
 # font family and font size functionality 
-current_font_family = 'Arial'
-current_font_size = 12
+current_font_family = file_read(0)
+current_font_size = file_read(1)
 
 def change_font(event=None):
     global current_font_family
     current_font_family = font_family.get()
     text_editor.configure(font=(current_font_family, current_font_size))
+    file_change(current_font_family,0)
 
 def change_fontsize(event=None):
     global current_font_size
     current_font_size = size_var.get()
     text_editor.configure(font=(current_font_family, current_font_size))
+    file_change(str(current_font_size),1)
 
 
 font_box.bind("<<ComboboxSelected>>", change_font)
@@ -464,6 +516,8 @@ def change_theme():
     color_tuple = color_dict.get(chosen_theme)
     fg_color, bg_color = color_tuple[0], color_tuple[1]
     text_editor.config(background=bg_color, fg=fg_color, insertbackground=fg_color) 
+    file_change(bg_color,2)   #changing background color in file handling
+    file_change(fg_color,3)   #changing foreground color in file handling
 for i in color_dict:
     color_theme.add_radiobutton(label = i,  variable=theme_choice, compound=tk.LEFT, command=change_theme)
 ##################################### Custom Theme ########################################################
@@ -490,6 +544,9 @@ def custom():
         global text_editor,custom__bg,custom__fg
         custom_theme.destroy()
         text_editor.configure(background=custom__bg,fg=custom__fg,insertbackground=custom__fg)
+        file_change(custom__bg,2)   #changing background color in file handling
+        file_change(custom__fg,3)   #changing foreground color in file handling
+
     ### displaying 
     custom_theme = tk.Toplevel()
     custom_theme.attributes('-topmost','true')
