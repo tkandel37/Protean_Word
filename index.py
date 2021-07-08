@@ -34,9 +34,10 @@ def changed(event=None):
     global text_changed,text_editor
 
     #bug fixed font not changing
-    ######################################################################################################                                        
-    text_editor.configure(font=(current_font_family, current_font_size),insertbackground=file_read(3))   #
-    ######################################################################################################
+    ####################################################################################                                      
+    text_editor.configure(font=(current_font_family, current_font_size),               #
+                        selectforeground=file_read(2),selectbackground=file_read(3))   #
+    ####################################################################################
 
     if text_editor.edit_modified():
         words = len(text_editor.get(1.0, 'end').split())
@@ -149,7 +150,8 @@ align_right_btn.grid(row=0, column=7, padx=5)
 
 fnt_fam = file_read(0)
 fnt_siz = int(file_read(1))
-text_editor = tk.Text(main_application,font=("Arial",80),background=file_read(2),fg=file_read(3),selectforeground="yellow",selectbackground="red",undo=True)
+text_editor = tk.Text(main_application,font=("Arial",80),background=file_read(2),fg=file_read(3),
+                        insertbackground=file_read(3),undo=True)
 
 text_editor.bind('<<Modified>>', changed) 
 
