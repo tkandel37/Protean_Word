@@ -21,7 +21,7 @@ main_menu.add_cascade(label='View', menu=view)
 
 ######################### End Main menu ####################################
 
-##############################################  status bar ##################
+##############################################  status bar #################
 def statusbar():
     global status_bar
     status_bar = ttk.Label(main_application, text = 'Status Bar')  
@@ -34,9 +34,9 @@ def changed(event=None):
     global text_changed,text_editor
 
     #bug fixed font not changing
-    ############################################################################                                         
-    text_editor.configure(font=(current_font_family, current_font_size))       #
-    ############################################################################
+    ######################################################################################################                                        
+    text_editor.configure(font=(current_font_family, current_font_size),insertbackground=file_read(3))   #
+    ######################################################################################################
 
     if text_editor.edit_modified():
         words = len(text_editor.get(1.0, 'end').split())
