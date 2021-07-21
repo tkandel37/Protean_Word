@@ -18,7 +18,11 @@ edit = tk.Menu(main_menu, tearoff=False)
 view = tk.Menu(main_menu, tearoff=False)
 
 
+<<<<<<< HEAD
 ## cascade 
+=======
+# cascade 
+>>>>>>> 1c036d88e5d97db77a312e9a7d2c1adb185782ab
 main_menu.add_cascade(label='File', menu=file)
 main_menu.add_cascade(label='Edit', menu=edit)
 main_menu.add_cascade(label='View', menu=view)

@@ -54,7 +54,11 @@ def audio_save(text):
         messagebox.showinfo("Audio File Saved", f"Audio saved with following settings: \n\n Speed: {speed} \n Volume: {volume} \n Gender: {gender}")
         audio_dialogue.destroy() #closing main box
 
+<<<<<<< HEAD
 ##########################################################################################################
+=======
+#########################################################################################################
+>>>>>>> 1c036d88e5d97db77a312e9a7d2c1adb185782ab
 def audio_setting(text):
     global audio_dialogue
     audio_dialogue = Tk()  

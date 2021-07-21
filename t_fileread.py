@@ -18,7 +18,11 @@ def file_read(index):
                 f.write(i)
         return read()
     
+<<<<<<< HEAD
 ##reading and writing file
+=======
+#reading and writing file
+>>>>>>> 1c036d88e5d97db77a312e9a7d2c1adb185782ab
 def file_change(text,index):
     file_path = os.path.isfile("system/style.pw")
 
