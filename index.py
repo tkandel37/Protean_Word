@@ -1,6 +1,9 @@
 import tkinter as tk 
 from tkinter import ttk
 from tkinter import font, colorchooser, filedialog, messagebox
+from tkinter.constants import END
+from speech import audio_setting,audio_play,audio_save
+from t_fileread import file_read,file_change
 import os
 
 main_application = tk.Tk()
@@ -14,10 +17,12 @@ file = tk.Menu(main_menu, tearoff=False)
 edit = tk.Menu(main_menu, tearoff=False)
 view = tk.Menu(main_menu, tearoff=False)
 
+
 # cascade 
 main_menu.add_cascade(label='File', menu=file)
 main_menu.add_cascade(label='Edit', menu=edit)
 main_menu.add_cascade(label='View', menu=view)
+
 
 ######################### End Main menu ####################################
 
@@ -49,48 +54,6 @@ def changed(event=None):
 
 ############################################## End status bar #############################################
 
-
-############################################## File handling  ##############################################
-#only reading file  ###returs the value
-def file_read(index):                 
-    file_path = os.path.isfile("system/style.pw")
-    def read():
-        global value
-        with open("system/style.pw",'r') as f:
-            text_list = f.readlines()
-            value = text_list[index].strip()
-        return value 
-    if file_path:
-        return read()
-    else:
-        with  open('system/style.pw','w') as f:
-            a = ["Arial\n","12\n","#ffffff\n","#000000\n"]
-            for i in a:
-                f.write(i)
-        return read()
-    
-#reading and writing file
-def file_change(text,index):
-    file_path = os.path.isfile("system/style.pw")
-
-    def change():
-        a = []
-        with open('system/style.pw','r') as f:
-            a = f.readlines()
-            a[index] = text + "\n"
-        with open('system/style.pw','w') as g:
-            for i in a:
-                g.write(i)
-
-    if file_path:
-        change()
-    else:
-        with  open('system/style.pw','w') as f:
-            a = ["Arial\n","12\n","#ffffff\n","#000000\n"]
-            for i in a:
-                f.write(i)
-        change() 
-############################################## End File handling  ##########################################
 
 
 ############################################## toolbar  ###################################################
@@ -387,7 +350,6 @@ file.add_command(label='Exit', compound=tk.LEFT, accelerator='Ctrl+Q', command=e
 
 ################################################## End File menu ##########################################################
 
-
 ################################################### Edit menu #############################################################
 
 ######### Find function
@@ -577,6 +539,18 @@ main_menu.add_cascade(label='Theme', menu=color_theme)
 
 ########################################### End Color Theme #############################################
 
+######################## Text to  speech ################################################################
+    
+    
+#Display in menu
+speech = tk.Menu(main_menu, tearoff=False)
+main_menu.add_cascade(label='Speech', menu=speech)
+
+speech.add_command(label='Play',  command=lambda:audio_play(text_editor.get('1.0',END)))
+speech.add_command(label='Save', command=lambda:audio_save(text_editor.get('1.0',END)))
+speech.add_command(label='Settings',  command=lambda:audio_setting(text_editor.get('1.0',END)))
+
+######################## END Text to speech ##############################################################
 
 ########################### Binding keys ######################
 main_application.bind("<Control-n>", new_file)
@@ -586,6 +560,10 @@ main_application.bind("<Control-Shift-s>", save_as)
 main_application.bind("<Control-q>", exit_func)
 main_application.bind("<Control-f>", find_func)
 ########################## Bind keys end ########################
+
+############# close button
+main_application.protocol("WM_DELETE_WINDOW", exit_func)
+
 
 main_application.config(menu=main_menu)
 main_application.mainloop()
