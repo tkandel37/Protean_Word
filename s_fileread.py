@@ -1,9 +1,5 @@
 import os
-<<<<<<< HEAD
 ############################################## File handling  ###############################################
-=======
-############################################## File handling  ##############################################
->>>>>>> 1c036d88e5d97db77a312e9a7d2c1adb185782ab
 #only reading file  ###returs the value
 def file_read(index):                 
     file_path = os.path.isfile("system/speech.pw")

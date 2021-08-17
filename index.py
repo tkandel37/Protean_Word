@@ -1,7 +1,7 @@
-import tkinter as tk 
+import tkinter as tk
 from tkinter import ttk
 from tkinter import font, colorchooser, filedialog, messagebox
-from tkinter.constants import END
+from tkinter.constants import END 
 from speech import audio_setting,audio_play,audio_save
 from t_fileread import file_read,file_change
 import os
@@ -17,16 +17,10 @@ file = tk.Menu(main_menu, tearoff=False)
 edit = tk.Menu(main_menu, tearoff=False)
 view = tk.Menu(main_menu, tearoff=False)
 
-
-<<<<<<< HEAD
 ## cascade 
-=======
-# cascade 
->>>>>>> 1c036d88e5d97db77a312e9a7d2c1adb185782ab
 main_menu.add_cascade(label='File', menu=file)
 main_menu.add_cascade(label='Edit', menu=edit)
 main_menu.add_cascade(label='View', menu=view)
-
 
 ######################### End Main menu ####################################
 
@@ -58,10 +52,7 @@ def changed(event=None):
 
 ############################################## End status bar #############################################
 
-
-
 ############################################## toolbar  ###################################################
-
 tool_bar = ttk.Label(main_application)
 tool_bar.pack(side=tk.TOP, fill=tk.X)
 
@@ -120,7 +111,7 @@ fnt_siz = int(file_read(1))
 text_editor = tk.Text(main_application,font=("Arial",80),background=file_read(2),fg=file_read(3),
                         insertbackground=file_read(3),undo=True)
 
-text_editor.bind('<<Modified>>', changed) 
+text_editor.bind('<<Modified>>', changed)
 
 text_editor.config(wrap='word', relief=tk.FLAT)
 

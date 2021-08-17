@@ -1,0 +1,8 @@
+Font name
+Font size
+Background
+Forground
+
+Speed
+Volume
+0 male 1 female
