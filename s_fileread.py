@@ -13,7 +13,7 @@ def file_read(index):
         return read()
     else:
         with  open('system/speech.pw','w') as f:
-            a = ["5\n","8\n","0\n"]
+            a = ["160\n","8\n","0\n"]
             for i in a:
                 f.write(i)
         return read()
@@ -35,7 +35,7 @@ def file_change(text,index):
         change()
     else:
         with  open('system/speech.pw','w') as f:
-            a = ["5\n","8\n","0\n"]
+            a = ["160\n","8\n","0\n"]
             for i in a:
                 f.write(i)
         change() 

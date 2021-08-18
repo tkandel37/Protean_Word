@@ -377,6 +377,7 @@ def find_func(event=None):
     find_dialogue = tk.Toplevel()
     find_dialogue.geometry('450x250+500+200')
     find_dialogue.title('Find')
+    find_dialogue.wm_iconbitmap('icons/icon.ico')
     find_dialogue.resizable(0,0)
 
     ## frame 
@@ -459,7 +460,6 @@ view.add_checkbutton(label='Status Bar',onvalue=1, offvalue=False,variable = sho
 color_theme = tk.Menu(main_menu, tearoff=False)
 
 theme_choice = tk.StringVar()
-#color_icons = (light_default_icon, light_plus_icon, dark_icon, red_icon, monokai_icon, night_blue_icon)
 
 color_dict = {
     'Light' : ('#000000', '#ffffff'),
